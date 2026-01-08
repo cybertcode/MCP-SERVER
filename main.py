@@ -65,6 +65,25 @@ mcp.prompt(
     description="Genera un email de bienvenida para un nuevo cliente",
 )
 
+def welcome_email(name: str,products:list[dict]):
+    product_list = ""
+    for product in products:
+        product_list += f"{product['name']}: Price: {product['price']})\n"
+    return f"""
+    Genera un email de bienvenida para un nuevo cliente.
+    El nombre del cliente es: {name}
+    los productos disponibles son:
+    {product_list}
+
+    El email debe tener un saludo inicial, una presentacion de los productos en formato lista HTML,
+    y una despedida cordial.
+
+    Responde con el contenido del email en formato HTML.
+    Devuelve tambien  el subject del email.
+    La respuesta debe tener el siguiente formato JSON:
+    - subject (str): "Asunto del email"
+    - body (str): "Contenido del email en formato HTML"
+    """
 
 
 mcp.run(transport="http",host="localhost",port=8000)

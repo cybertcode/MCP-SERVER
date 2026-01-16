@@ -61,17 +61,17 @@ def client_info(message: str) -> str:
     """
 
 @mcp.prompt(name="welcome_email", description="Genera un email de bienvenida para un nuevo cliente")
-def welcome_email(name: str, products: list[dict]) -> str:
+def welcome_email(name: str, products: str):
     """Genera prompt para crear email de bienvenida con lista de productos"""
-    product_list = ""
-    for product in products:
-        product_list += f"{product['name']}: Price: {product['price']})\n"
+    # product_list = ""
+    # for product in products:
+    #     product_list += f"{product['name']}: Price: {product['price']})\n"
 
     return f"""
     Genera un email de bienvenida para un nuevo cliente.
     El nombre del cliente es: {name}
     los productos disponibles son:
-    {product_list}
+    {products}
 
     El email debe tener un saludo inicial, una presentacion de los productos en formato lista HTML,
     y una despedida cordial.

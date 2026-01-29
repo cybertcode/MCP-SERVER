@@ -1,0 +1,14 @@
+Inspecting api routes:
+--- Routes for prefix: '' ---
+Route: /openapi.json [HEAD, GET] -> openapi
+Route: /docs [HEAD, GET] -> swagger_ui_html
+Route: /docs/oauth2-redirect [HEAD, GET] -> swagger_ui_redirect
+Route: /redoc [HEAD, GET] -> redoc_html
+--- End Routes for prefix: '' ---
+
+
+Inspecting mcp_app routes directly:
+--- Routes for prefix: '' ---
+Route: /mcp [HEAD, POST, GET, DELETE] -> RequireAuthMiddleware
+--- End Routes for prefix: '' ---
+

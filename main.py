@@ -15,6 +15,7 @@ Fecha: Enero 2026
 # IMPORTACIONES
 # =============================================================================
 from fastmcp import FastMCP
+from fastmcp.server.auth import StaticTokenVerifier
 from dotenv import load_dotenv
 import smtplib
 from email.mime.text import MIMEText
@@ -34,6 +35,15 @@ SMTP_PORT = 587  # Puerto para conexión TLS
 EMAIL_USER = os.getenv("EMAIL_USER")  # Dirección de correo del remitente
 EMAIL_PASS = os.getenv("EMAIL_PASS")  # Contraseña de aplicación de Gmail
 
+tokens = {
+    "my-secret-token": {
+        "client_id": "client_123",
+        "scopes": ["read"]
+    },
+}
+
+verifier = StaticTokenVerifier(tokens)
+
 # Validación de credenciales al iniciar el servidor
 if not EMAIL_USER or not EMAIL_PASS:
     print("⚠️ Advertencia: EMAIL_USER o EMAIL_PASS no están configurados en .env")
@@ -42,7 +52,7 @@ if not EMAIL_USER or not EMAIL_PASS:
 # =============================================================================
 # INICIALIZACIÓN DEL SERVIDOR MCP
 # =============================================================================
-mcp = FastMCP("MCP Server")
+mcp = FastMCP("MCP Server",auth=verifier)
 
 # =============================================================================
 # HERRAMIENTAS (TOOLS) DEL SERVIDOR MCP

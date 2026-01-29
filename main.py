@@ -15,6 +15,7 @@ Fecha: Enero 2026
 # IMPORTACIONES
 # =============================================================================
 from fastmcp import FastMCP
+from fastapi import FastAPI
 from fastmcp.server.auth import StaticTokenVerifier
 from dotenv import load_dotenv
 import smtplib
@@ -53,6 +54,12 @@ if not EMAIL_USER or not EMAIL_PASS:
 # INICIALIZACIÓN DEL SERVIDOR MCP
 # =============================================================================
 mcp = FastMCP("MCP Server",auth=verifier)
+mcp_app = mcp.http_app()
+api = FastAPI(lifespan=mcp_app.lifespan)
+
+api.get("/api/status")
+def status():
+    return {"status": "ok"}
 
 # =============================================================================
 # HERRAMIENTAS (TOOLS) DEL SERVIDOR MCP
@@ -223,6 +230,10 @@ def welcome_email(name: str, products: str) -> str:
 # PUNTO DE ENTRADA DEL SERVIDOR
 # =============================================================================
 # Iniciar el servidor MCP en modo HTTP para recibir conexiones de clientes
+api.mount("/api", mcp_app)
+
 if __name__ == "__main__":
-    print("🚀 Iniciando servidor MCP en http://localhost:8000/mcp")
-    mcp.run(transport="http", host="localhost", port=8000)
+    # print("🚀 Iniciando servidor MCP en http://localhost:8000/mcp")
+    # mcp.run(transport="http", host="localhost", port=8000)
+    import uvicorn
+    uvicorn.run(api, host="0.0.0.0", port=8000)

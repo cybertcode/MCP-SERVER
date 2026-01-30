@@ -53,7 +53,7 @@ if not EMAIL_USER or not EMAIL_PASS:
 # =============================================================================
 # INICIALIZACIÓN DEL SERVIDOR MCP
 # =============================================================================
-mcp = FastMCP("MCP Server",auth=verifier)
+mcp = FastMCP("MCP Server")
 mcp_app = mcp.http_app()
 api = FastAPI(lifespan=mcp_app.lifespan)
 

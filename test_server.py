@@ -3,12 +3,21 @@ from fastmcp import Client
 from fastmcp.client.transports import StreamableHttpTransport
 from mcp.types import CallToolResult, GetPromptResult
 import asyncio
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+MCP_TOKEN = os.getenv("MCP_TOKEN")
+print(f"Debug: Loaded Token (repr): {repr(MCP_TOKEN)}")
+
+
 
 transport = StreamableHttpTransport(
     # url="http://localhost:8000/api/mcp",
     url="https://mcp-server-testeando.fastmcp.app/mcp",
     headers={
-        "Authorization": "Bearer my-secret-token"
+        "Authorization": f"Bearer {MCP_TOKEN}"
     }
 )
 client = Client(transport=transport)

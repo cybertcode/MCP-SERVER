@@ -54,6 +54,9 @@ desktop.ini
 # LOGS Y TEMPORALES
 # =============================================================================
 *.log
+*_log.txt
+routes.txt
+debug_routes.py
 logs/
 tmp/
 temp/

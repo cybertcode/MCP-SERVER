@@ -1,252 +1,120 @@
-# 📧 MCP Server - Servidor de Protocolo de Contexto de Modelo
+# 🚀 MCP Server - Model Context Protocol
 
-Un servidor MCP (Model Context Protocol) construido con FastMCP que expone herramientas para envío de emails y prompts para interacción con usuarios.
+![Python Version](https://img.shields.io/badge/python-3.13%2B-blue?style=for-the-badge&logo=python)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.109.0-009688?style=for-the-badge&logo=fastapi)
+![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
+![Status](https://img.shields.io/badge/status-active-success?style=for-the-badge)
 
-## 📋 Tabla de Contenidos
-
-- [¿Qué es MCP?](#-qué-es-mcp)
-- [Características](#-características)
-- [Requisitos](#-requisitos)
-- [Instalación](#-instalación)
-- [Configuración](#-configuración)
-- [Uso](#-uso)
-- [Estructura del Proyecto](#-estructura-del-proyecto)
-- [API Reference](#-api-reference)
+**MCP Server** es una implementación robusta y eficiente de un servidor compatible con el *Model Context Protocol* (MCP). Diseñado para extender las capacidades de los Modelos de Lenguaje (LLMs), este servidor proporciona herramientas para el envío de correos electrónicos y prompts inteligentes para la detección de intenciones y gestión de datos de clientes.
 
 ---
 
-## 🤔 ¿Qué es MCP?
+## ✨ Características Principales
 
-**MCP (Model Context Protocol)** es un protocolo abierto desarrollado por Anthropic que permite a los modelos de lenguaje (LLMs) interactuar con sistemas externos de manera segura y estructurada.
-
-### Conceptos Clave:
-
-| Concepto | Descripción |
-|----------|-------------|
-| **Tools** | Funciones que el modelo puede invocar para realizar acciones (ej: enviar emails) |
-| **Prompts** | Plantillas de texto que guían al modelo en tareas específicas |
-| **Resources** | Datos que el modelo puede leer (bases de datos, archivos, APIs) |
+*   **📧 Integración SMTP Completa**: Envío de correos electrónicos enriquecidos (HTML) a través de Gmail u otros proveedores SMTP.
+*   **🧠 Prompts Inteligentes**:
+    *   **Detección de Intención**: Clasifica mensajes de usuarios automáticamente.
+    *   **Extracción de Información**: Identifica datos clave como nombres y correos.
+    *   **Generación de Contenido**: Crea emails de bienvenida personalizados dinámicamente.
+*   **🔒 Seguridad Primero**: Gestión de credenciales mediante variables de entorno y validación de tokens.
+*   **⚡ Alto Rendimiento**: Construido sobre **FastAPI** y **FastMCP** para una latencia mínima.
 
 ---
 
-## ✨ Características
+## 🛠️ Requisitos Previos
 
-- 📨 **Envío de emails** via Gmail SMTP
-- 🔍 **Detección de intención** del usuario
-- 👤 **Extracción de datos** del cliente (nombre y email)
-- ✉️ **Generación de emails** de bienvenida personalizados
+Antes de comenzar, asegúrate de tener instalado:
 
----
-
-## 📦 Requisitos
-
-- Python 3.13+
-- uv (gestor de paquetes)
-- Cuenta de Gmail con contraseña de aplicación
+*   **Python 3.13** o superior.
+*   **[uv](https://github.com/astral-sh/uv)**: Un gestor de paquetes de Python extremadamente rápido.
 
 ---
 
-## 🚀 Instalación
+## 📦 Instalación
 
-### 1. Clonar o descargar el proyecto
+1.  **Clonar el repositorio:**
 
-```bash
-cd mcp-server
-```
+    ```bash
+    git clone https://github.com/TUSUARIO/mcp-server.git
+    cd mcp-server
+    ```
 
-### 2. Instalar dependencias con uv
+2.  **Instalar dependencias:**
 
-```bash
-uv sync
-```
+    Utilizando `uv` para sincronizar el entorno virtual:
 
-Esto instalará automáticamente:
-- `fastmcp>=2.14.2`
-- `python-dotenv>=1.2.1`
+    ```bash
+    uv sync
+    ```
 
 ---
 
 ## ⚙️ Configuración
 
-### 1. Configurar credenciales de Gmail
+1.  Crea un archivo `.env` en la raíz del proyecto basándote en el siguiente ejemplo:
 
-Crea o edita el archivo `.env` en la raíz del proyecto:
+    ```ini
+    # .env
+    EMAIL_USER=tu_correo@gmail.com
+    EMAIL_PASS=tu_contraseña_de_aplicacion
+    ```
 
-```env
-EMAIL_USER=tu_email@gmail.com
-EMAIL_PASS=xxxx xxxx xxxx xxxx
-```
-
-### 2. Obtener contraseña de aplicación de Gmail
-
-> ⚠️ **Importante**: No uses tu contraseña normal de Gmail. Necesitas una "Contraseña de Aplicación".
-
-1. Ve a [Configuración de Seguridad de Google](https://myaccount.google.com/security)
-2. Activa la **Verificación en 2 pasos**
-3. Ve a "Contraseñas de aplicaciones"
-4. Genera una nueva contraseña para "Correo" en "Dispositivo Windows"
-5. Copia la contraseña de 16 caracteres (sin espacios) al archivo `.env`
+    > **Nota:** Para Gmail, debes usar una "Contraseña de Aplicación" si tienes la verificación en dos pasos activada.
 
 ---
 
-## 🎮 Uso
+## 🚀 Uso
 
-### Iniciar el servidor
+Para iniciar el servidor en modo desarrollo:
 
 ```bash
 uv run main.py
 ```
 
-El servidor se iniciará en `http://localhost:8000`
+El servidor estará disponible en: `http://0.0.0.0:8000`
 
-### Probar el servidor
+### Endpoints Disponibles
 
-Con el servidor corriendo en otra terminal:
-
-```bash
-uv run test_server.py
-```
-
-Esto enviará un email de prueba y mostrará la respuesta del servidor.
+| Tipo | Nombre | Descripción |
+| :--- | :--- | :--- |
+| **Tool** | `send_email` | Envía correos HTML vía SMTP. |
+| **Prompt** | `detect_action` | Clasifica la intención del usuario (saludo/info). |
+| **Prompt** | `client_info` | Extrae nombre y email de un texto. |
+| **Prompt** | `welcome_email` | Genera el cuerpo de un email de bienvenida. |
 
 ---
 
-## 📁 Estructura del Proyecto
+## 📂 Estructura del Proyecto
 
-```
+```text
 mcp-server/
-├── .env                 # Variables de entorno (credenciales)
+├── main.py              # Punto de entrada y lógica del servidor
+├── pyproject.toml       # Definición de dependencias
 ├── .gitignore           # Archivos ignorados por git
-├── .python-version      # Versión de Python (3.13)
-├── main.py              # Servidor MCP principal
-├── test_server.py       # Cliente de prueba
-├── pyproject.toml       # Configuración del proyecto y dependencias
-├── uv.lock              # Lock file de dependencias
-└── README.md            # Esta documentación
+├── .env                 # Variables de entorno (NO COMMITEAR)
+└── README.md            # Documentación del proyecto
 ```
 
 ---
 
-## 📚 API Reference
+## 🤝 Contribución
 
-### Tools (Herramientas)
+¡Las contribuciones son bienvenidas! Por favor, abre un *issue* o envía un *pull request* para mejoras o correcciones.
 
-#### `send_email`
-
-Envía un email usando SMTP de Gmail.
-
-**Parámetros:**
-
-| Parámetro | Tipo | Descripción |
-|-----------|------|-------------|
-| `to` | `str` | Email del destinatario |
-| `subject` | `str` | Asunto del email |
-| `body` | `str` | Contenido HTML del email |
-
-**Retorna:**
-
-```json
-{
-  "status": "success",
-  "to": "destinatario@email.com",
-  "subject": "Asunto del email"
-}
-```
-
----
-
-### Prompts
-
-#### `detect_action`
-
-Detecta la intención del usuario (saludo o información de productos).
-
-**Parámetros:**
-
-| Parámetro | Tipo | Descripción |
-|-----------|------|-------------|
-| `message` | `str` | Mensaje del usuario a analizar |
-
-**Respuesta esperada del modelo:**
-
-```json
-{
-  "action": "saludo" | "informacion_productos"
-}
-```
-
----
-
-#### `client_info`
-
-Extrae nombre y email del mensaje del usuario.
-
-**Parámetros:**
-
-| Parámetro | Tipo | Descripción |
-|-----------|------|-------------|
-| `message` | `str` | Mensaje del usuario |
-
-**Respuesta esperada del modelo:**
-
-```json
-{
-  "name": "Nombre del cliente" | null,
-  "email": "email@ejemplo.com" | null
-}
-```
-
----
-
-#### `welcome_email`
-
-Genera un email de bienvenida personalizado.
-
-**Parámetros:**
-
-| Parámetro | Tipo | Descripción |
-|-----------|------|-------------|
-| `name` | `str` | Nombre del cliente |
-| `products` | `list[dict]` | Lista de productos `[{"name": "...", "price": ...}]` |
-
-**Respuesta esperada del modelo:**
-
-```json
-{
-  "subject": "Asunto del email",
-  "body": "<html>...</html>"
-}
-```
-
----
-
-## 🔗 Integración con Clientes MCP
-
-Este servidor puede ser consumido por cualquier cliente compatible con MCP, incluyendo:
-
-- **Claude Desktop** - Configura en `claude_desktop_config.json`
-- **Otros LLMs** - Cualquier cliente que implemente el protocolo MCP
-
-### Ejemplo de configuración para Claude Desktop:
-
-```json
-{
-  "mcpServers": {
-    "mcp-server": {
-      "url": "http://localhost:8000/mcp"
-    }
-  }
-}
-```
-
----
-
-## 📝 Licencia
-
-MIT License
+1.  Haz un Fork del proyecto.
+2.  Crea tu rama de funcionalidad (`git checkout -b feature/AmazingFeature`).
+3.  Haz Commit de tus cambios (`git commit -m 'Add some AmazingFeature'`).
+4.  Push a la rama (`git push origin feature/AmazingFeature`).
+5.  Abre un Pull Request.
 
 ---
 
 ## 👤 Autor
 
-Desarrollado por MKEVYN
+**MKevyn**
+
+---
+
+<p align="center">
+  <sub>Desarrollado con ❤️ y Python</sub>
+</p>

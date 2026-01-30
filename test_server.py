@@ -5,7 +5,8 @@ from mcp.types import CallToolResult, GetPromptResult
 import asyncio
 
 transport = StreamableHttpTransport(
-    url="http://localhost:8000/api/mcp",
+    # url="http://localhost:8000/api/mcp",
+    url="https://mcp-server-testeando.fastmcp.app/mcp",
     headers={
         "Authorization": "Bearer my-secret-token"
     }
